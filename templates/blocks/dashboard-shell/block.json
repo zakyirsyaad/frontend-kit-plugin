@@ -1,0 +1,15 @@
+{
+  "name": "dashboard-shell",
+  "description": "An app shell at /dashboard: collapsible shadcn sidebar, header with page title, user menu, and a route-level loading skeleton.",
+  "shadcn": ["sidebar", "tooltip", "avatar", "dropdown-menu", "separator", "skeleton", "card"],
+  "dependencies": [],
+  "files": [
+    "app-sidebar.tsx",
+    "nav-user.tsx",
+    "site-header.tsx",
+    "nav-items.ts",
+    "app/dashboard/layout.tsx",
+    "app/dashboard/loading.tsx",
+    "app/dashboard/page.tsx"
+  ]
+}

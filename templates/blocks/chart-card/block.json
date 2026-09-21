@@ -1,0 +1,7 @@
+{
+  "name": "chart-card",
+  "description": "A card with a shadcn chart (recharts) colored by the chart-1..5 tokens, a legend, and a built-in empty state.",
+  "shadcn": ["card", "chart"],
+  "dependencies": ["recharts"],
+  "files": ["chart-card.tsx"]
+}

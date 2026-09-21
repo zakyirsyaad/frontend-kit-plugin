@@ -1,0 +1,7 @@
+{
+  "name": "form",
+  "description": "A validated form: react-hook-form + zod schema + shadcn Field, with inline errors and a pending submit state.",
+  "shadcn": ["field", "input", "textarea", "select", "button", "card"],
+  "dependencies": ["react-hook-form", "zod", "@hookform/resolvers"],
+  "files": ["contact-form.tsx", "contact-schema.ts"]
+}

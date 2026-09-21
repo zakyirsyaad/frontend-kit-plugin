@@ -1,0 +1,16 @@
+[
+  {
+    "name": "border-beam",
+    "type": "registry:ui",
+    "dependencies": [
+      "motion"
+    ],
+    "files": [
+      {
+        "path": "registry/magicui/border-beam.tsx",
+        "type": "registry:ui",
+        "content": "\"use client\"\n\nimport { motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport const BorderBeam = ({\n  className,\n  colorFrom = \"#f59e0b\",\n  colorTo = \"#8b5cf6\",\n  onDone,\n}: {\n  className?: string\n  colorFrom?: string\n  colorTo?: string\n  onDone?: () => void\n}) => {\n  return (\n    <div className=\"pointer-events-none absolute inset-0 rounded-[inherit] border border-transparent\">\n      <motion.div\n        className={cn(\"absolute aspect-square w-16 bg-gradient-to-l from-(--color-from) via-(--color-to) to-transparent\", className)}\n        style={{ \"--color-from\": colorFrom, \"--color-to\": colorTo, boxShadow: \"0 0 8px #f59e0b, 0 0 16px #8b5cf6\" } as React.CSSProperties}\n        animate={{ offsetDistance: [\"0%\", \"100%\"] }}\n        transition={{ repeat: Infinity, duration: 6, ease: \"linear\" }}\n      />\n    </div>\n  )\n}\n"
+      }
+    ]
+  }
+]

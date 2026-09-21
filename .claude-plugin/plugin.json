@@ -1,0 +1,63 @@
+{
+  "name": "frontend-kit",
+  "version": "0.3.1",
+  "description": "Systems/dashboard frontend kit for Next.js App Router + Tailwind CSS v4 + shadcn/ui: scaffold new projects, adopt existing ones, switch shadcn base-color palettes, auto-apply component rules, and review code against them.",
+  "author": {
+    "name": "Zaky Irsyad Rais",
+    "url": "https://github.com/zakyirsyaad"
+  },
+  "homepage": "https://github.com/zakyirsyaad/frontend-kit-plugin",
+  "repository": "https://github.com/zakyirsyaad/frontend-kit-plugin",
+  "license": "MIT",
+  "keywords": [
+    "nextjs",
+    "tailwindcss",
+    "shadcn-ui",
+    "design-tokens",
+    "scaffold",
+    "motion",
+    "gsap",
+    "react-three-fiber"
+  ],
+  "userConfig": {
+    "default_palette": {
+      "type": "string",
+      "title": "Default shadcn/ui base-color palette",
+      "description": "Default base-color palette for new projects (neutral, zinc, stone, gray, slate, mauve, olive, mist, taupe).",
+      "default": "zinc"
+    },
+    "default_accent": {
+      "type": "string",
+      "title": "Default identity accent color",
+      "description": "Accent color preset (blue, emerald, orange, rose, amber, teal, violet) or hex code (#xxxxxx), or 'none'.",
+      "default": "none"
+    },
+    "default_radius": {
+      "type": "string",
+      "title": "Default border radius scale",
+      "description": "Border radius preset: sharp (0.25rem), default (0.625rem), soft (1rem), or pill.",
+      "default": "default"
+    },
+    "default_display_font": {
+      "type": "string",
+      "title": "Default display heading font",
+      "description": "Self-hosted display font name from @fontsource-variable/<name>, or 'none' for default sans.",
+      "default": "none"
+    },
+    "package_manager": {
+      "type": "string",
+      "title": "Package manager for new projects",
+      "description": "Default package manager when scaffolding new projects (bun, pnpm, npm, yarn).",
+      "default": "bun"
+    },
+    "animation": {
+      "type": "string",
+      "title": "Default animation library",
+      "description": "Animation library preference for new projects (motion, gsap).",
+      "default": "motion"
+    }
+  },
+  "experimental": {
+    "evals": "evals"
+  }
+}

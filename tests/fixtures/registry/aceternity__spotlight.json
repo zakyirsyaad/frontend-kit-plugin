@@ -1,0 +1,14 @@
+[
+  {
+    "name": "spotlight",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "components/ui/spotlight.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/spotlight.tsx",
+        "content": "import { cn } from \"@/lib/utils\"\n\n// Stand-in: relies on an animate-spotlight class the item does not define.\nexport const Spotlight = ({ className, fill }: { className?: string; fill?: string }) => {\n  return (\n    <svg className={cn(\"pointer-events-none absolute animate-spotlight opacity-0\", className)} viewBox=\"0 0 100 100\" fill=\"none\">\n      <ellipse cx=\"50\" cy=\"50\" rx=\"50\" ry=\"10\" fill={fill || \"white\"} fillOpacity=\"0.2\" />\n    </svg>\n  )\n}\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "name": "state-panel",
+  "description": "One component for empty, loading and error states, so every list, table and chart fails the same way.",
+  "shadcn": ["empty", "button"],
+  "dependencies": [],
+  "files": ["state-panel.tsx"]
+}

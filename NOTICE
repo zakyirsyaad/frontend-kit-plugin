@@ -1,0 +1,46 @@
+frontend-kit
+Copyright (c) 2026 Zaky Irsyad Rais
+Licensed under the MIT License (see LICENSE).
+
+This plugin bundles or derives from the following third-party work.
+
+1. shadcn/ui (MIT) — https://github.com/shadcn-ui/ui
+   The base-color token values under scripts/palettes/*.json are copied from the
+   public registry at https://ui.shadcn.com/r/colors/<name>.json (cssVarsV4).
+   Refresh them with `node scripts/refresh-palettes.mjs`.
+
+2. Tailwind CSS (MIT) — https://github.com/tailwindlabs/tailwindcss
+   The status token values (green, amber, red) are the oklch values published in
+   the Tailwind v4 default theme.
+
+3. Geist and Geist Mono (SIL Open Font License 1.1) — https://github.com/vercel/geist-font
+   Scaffolded projects install the `geist` npm package, which self-hosts these
+   fonts. The fonts are not redistributed by this repository.
+   License: https://github.com/vercel/geist-font/blob/main/LICENSE.TXT
+
+4. Display fonts installed on request through `@fontsource-variable/<name>`
+   (https://fontsource.org) keep their own upstream licenses, usually the SIL
+   Open Font License. The plugin installs them into your project; it does not
+   redistribute font files.
+
+5. Aceternity UI and Magic UI components are NOT bundled or redistributed here.
+   When you ask for one, it is installed straight from its own registry into
+   your project with the shadcn CLI, and remains subject to its own license:
+   - Magic UI: MIT — https://github.com/magicuidesign/magicui
+   - Aceternity UI: see https://ui.aceternity.com/licence — the published terms
+     cover Aceternity UI Pro and forbid redistributing the source or bundling it
+     into templates or kits. Check the terms yourself before commercial use.
+
+6. Blocks (templates/blocks/) are written for this kit. They import libraries
+   that the blocks skill installs into your project and that are not
+   redistributed here: TanStack Table (MIT), Recharts (MIT), react-hook-form
+   (MIT), Zod (MIT), @hookform/resolvers (MIT), lucide-react (ISC), and shadcn/ui
+   components (MIT) added with the shadcn CLI.
+
+7. Test fixtures under tests/fixtures/registry/ record only the metadata that
+   `shadcn view` returns for Magic UI and Aceternity items (names, dependencies,
+   CSS variables, file paths). File contents are short stand-ins written for the
+   tests, not the original source.
+
+Tool names referenced in the documentation (Next.js, Vercel, Claude Code, ECC,
+Impeccable, taste-skill) belong to their respective owners.

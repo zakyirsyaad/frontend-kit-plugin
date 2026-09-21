@@ -1,0 +1,7 @@
+{
+  "name": "data-table",
+  "description": "A sortable, filterable, paginated table (TanStack Table v9 + shadcn table) with a labelled status badge column.",
+  "shadcn": ["table", "badge", "button", "input", "select"],
+  "dependencies": ["@tanstack/react-table@^9"],
+  "files": ["deployments-table.tsx", "status-badge.tsx"]
+}

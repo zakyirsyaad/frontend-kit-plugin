@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-09-21",
+  "checkedWith": "shadcn@4.21.0 view",
+  "note": "Names and notes only. No component code is stored here; items are installed from their own registries into the user's project.",
+  "registries": {
+    "@magicui": {
+      "license": "MIT",
+      "source": "https://github.com/magicuidesign/magicui",
+      "redistribution": "allowed with the MIT notice"
+    },
+    "@aceternity": {
+      "license": "Aceternity UI terms",
+      "source": "https://ui.aceternity.com/licence",
+      "redistribution": "not allowed; the published terms cover Pro and forbid redistributing source or bundling it into templates. Check the terms before commercial use."
+    }
+  },
+  "kinds": {
+    "ambient": "Animated or decorative page background. At most one per page.",
+    "loop": "Content that moves on its own, such as a marquee.",
+    "accent": "Highlight on a single control or card.",
+    "interaction": "Responds to pointer or hover only.",
+    "content": "Animates a value the user reads."
+  },
+  "needs": [
+    {
+      "id": "hero-background",
+      "label": "Subtle animated or patterned background behind a hero",
+      "kind": "ambient",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/grid-pattern",
+          "fit": "Static SVG grid; the calmest option and no motion to gate.",
+          "issues": ["Uses palette classes (gray-*) for strokes; map them to border or muted-foreground."]
+        },
+        {
+          "item": "@magicui/dot-pattern",
+          "fit": "Dot field with an optional glow; reads well behind dense copy.",
+          "issues": ["Imports motion/react without declaring motion as a dependency; install motion first.", "Motion without reduced-motion handling.", "One palette class to map to a token."]
+        },
+        {
+          "item": "@aceternity/background-beams",
+          "fit": "Animated beams for a louder launch-style hero.",
+          "issues": ["6 raw hex colors in gradients.", "Motion without reduced-motion handling."]
+        }
+      ]
+    },
+    {
+      "id": "hero-spotlight",
+      "label": "Spotlight or light-cone effect on a hero",
+      "kind": "ambient",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@aceternity/spotlight-new",
+          "fit": "Soft moving spotlight with no extra CSS.",
+          "issues": ["Imports motion/react but does not declare motion as a dependency; install motion first.", "Motion without reduced-motion handling."]
+        },
+        {
+          "item": "@aceternity/spotlight",
+          "fit": "Static SVG spotlight that fades in once.",
+          "issues": ["Uses the animate-spotlight class but ships no @keyframes or theme variable, so under Tailwind v4 it does not animate until the keyframes are added."]
+        }
+      ]
+    },
+    {
+      "id": "logo-marquee",
+      "label": "Scrolling row of customer or partner logos",
+      "kind": "loop",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/marquee",
+          "fit": "CSS-only marquee with pause-on-hover and vertical mode.",
+          "issues": ["Writes --animate-marquee(-vertical) and @keyframes into globals.css.", "Needs motion-reduce: so the row stops for reduced-motion users."]
+        }
+      ]
+    },
+    {
+      "id": "metric-ticker",
+      "label": "Number that counts up to a metric",
+      "kind": "content",
+      "dashboardOk": true,
+      "candidates": [
+        {
+          "item": "@magicui/number-ticker",
+          "fit": "Counts up once when in view; fine on dashboards and stat sections.",
+          "issues": ["2 palette classes (black/white) to map to foreground.", "Motion without reduced-motion handling; show the final value immediately when reduced."]
+        }
+      ]
+    },
+    {
+      "id": "cta-shimmer",
+      "label": "Call-to-action button with a moving highlight",
+      "kind": "accent",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/shimmer-button",
+          "fit": "One primary CTA per page.",
+          "issues": ["4 raw hex colors and 2 palette classes; map background to primary.", "Writes --animate-shimmer-slide and --animate-spin-around with @keyframes.", "Needs motion-reduce:."]
+        },
+        {
+          "item": "@magicui/animated-shiny-text",
+          "fit": "Shimmer on a short eyebrow line instead of the button itself.",
+          "issues": ["Palette classes (text-neutral-*, via-black/white) to map to muted-foreground and foreground.", "Writes --animate-shiny-text with @keyframes; needs motion-reduce:."]
+        }
+      ]
+    },
+    {
+      "id": "border-highlight",
+      "label": "Animated light running along a card or input border",
+      "kind": "accent",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/border-beam",
+          "fit": "Draws attention to one pricing tier or sign-up card.",
+          "issues": ["4 raw hex colors for the beam; map to primary or chart tokens.", "Motion without reduced-motion handling."]
+        }
+      ]
+    },
+    {
+      "id": "feature-bento",
+      "label": "Feature grid with mixed tile sizes",
+      "kind": "interaction",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/bento-grid",
+          "fit": "Tiles with hover reveal and a call to action.",
+          "issues": ["Adds @radix-ui/react-icons next to lucide.", "6 palette classes and 2 token classes; mixed."]
+        },
+        {
+          "item": "@aceternity/bento-grid",
+          "fit": "Plain bento layout with header slots.",
+          "issues": ["Declares @tabler/icons-react, so the package is installed, although the component itself does not import it; remove it afterwards if nothing else uses it.", "8 palette classes (neutral-*)."]
+        }
+      ],
+      "kitAlternative": "The landing-sections block already has a token-only bento; prefer /frontend-kit:blocks landing-sections unless the hover effect is the point."
+    },
+    {
+      "id": "card-hover",
+      "label": "Cards that react to the pointer",
+      "kind": "interaction",
+      "dashboardOk": false,
+      "candidates": [
+        {
+          "item": "@magicui/magic-card",
+          "fit": "Pointer-following gradient on cards.",
+          "issues": ["7 raw hex colors.", "Depends on next-themes and reads useTheme(); without a ThemeProvider it cannot tell dark from light."]
+        },
+        {
+          "item": "@aceternity/card-hover-effect",
+          "fit": "Grid of link cards with a sliding hover background.",
+          "issues": ["Uses motion/react without \"use client\"; it breaks as a Server Component until the directive is added.", "7 palette classes."]
+        },
+        {
+          "item": "@aceternity/3d-card",
+          "fit": "Tilt-on-hover card for a single showcase item.",
+          "issues": ["Pointer-only effect; keyboard users get the flat card, which is acceptable but should be checked."]
+        }
+      ]
+    }
+  ]
+}

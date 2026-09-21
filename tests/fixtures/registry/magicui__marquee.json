@@ -1,0 +1,37 @@
+[
+  {
+    "name": "marquee",
+    "type": "registry:ui",
+    "cssVars": {
+      "theme": {
+        "animate-marquee": "marquee var(--duration) infinite linear",
+        "animate-marquee-vertical": "marquee-vertical var(--duration) linear infinite"
+      }
+    },
+    "css": {
+      "@keyframes marquee": {
+        "from": {
+          "transform": "translateX(0)"
+        },
+        "to": {
+          "transform": "translateX(calc(-100% - var(--gap)))"
+        }
+      },
+      "@keyframes marquee-vertical": {
+        "from": {
+          "transform": "translateY(0)"
+        },
+        "to": {
+          "transform": "translateY(calc(-100% - var(--gap)))"
+        }
+      }
+    },
+    "files": [
+      {
+        "path": "registry/magicui/marquee.tsx",
+        "type": "registry:ui",
+        "content": "import { cn } from \"@/lib/utils\"\n\nexport function Marquee({ className, vertical = false, children }: { className?: string; vertical?: boolean; children: React.ReactNode }) {\n  return (\n    <div className={cn(\"group flex overflow-hidden [--duration:40s] [--gap:1rem]\", className)}>\n      <div className={cn(\"flex shrink-0 gap-(--gap)\", vertical ? \"animate-marquee-vertical flex-col\" : \"animate-marquee\")}>\n        {children}\n      </div>\n    </div>\n  )\n}\n"
+      }
+    ]
+  }
+]

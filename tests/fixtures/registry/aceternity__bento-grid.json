@@ -1,0 +1,17 @@
+[
+  {
+    "name": "bento-grid",
+    "type": "registry:ui",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "files": [
+      {
+        "path": "components/ui/bento-grid.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/bento-grid.tsx",
+        "content": "import { cn } from \"@/lib/utils\"\n\n// Stand-in: declares @tabler/icons-react but imports nothing from it; palette classes for surfaces.\nexport function BentoGrid({ className, children }: { className?: string; children?: React.ReactNode }) {\n  return <div className={cn(\"grid gap-4 md:grid-cols-3\", className)}>{children}</div>\n}\n\nexport function BentoGridItem({ className, title, icon }: { className?: string; title?: React.ReactNode; icon?: React.ReactNode }) {\n  return (\n    <div className={cn(\"flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-4 dark:border-neutral-800 dark:bg-black\", className)}>\n      {icon}\n      <div className=\"font-medium text-neutral-700 dark:text-neutral-200\">{title}</div>\n    </div>\n  )\n}\n"
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "name": "number-ticker",
+    "type": "registry:ui",
+    "dependencies": [
+      "motion"
+    ],
+    "files": [
+      {
+        "path": "registry/magicui/number-ticker.tsx",
+        "type": "registry:ui",
+        "content": "\"use client\"\n\nimport { useInView, useMotionValue, useSpring } from \"motion/react\"\nimport { useEffect, useRef } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport function NumberTicker({ value, className }: { value: number; className?: string }) {\n  const ref = useRef<HTMLSpanElement>(null)\n  const motionValue = useMotionValue(0)\n  const spring = useSpring(motionValue, { damping: 60, stiffness: 100 })\n  const inView = useInView(ref, { once: true })\n\n  useEffect(() => {\n    if (inView) motionValue.set(value)\n  }, [inView, motionValue, value])\n\n  useEffect(() => spring.on(\"change\", (v) => {\n    if (ref.current) ref.current.textContent = Intl.NumberFormat(\"en-US\").format(Math.round(v))\n  }), [spring])\n\n  return <span ref={ref} className={cn(\"inline-block tabular-nums text-black dark:text-white\", className)} />\n}\n"
+      }
+    ]
+  }
+]

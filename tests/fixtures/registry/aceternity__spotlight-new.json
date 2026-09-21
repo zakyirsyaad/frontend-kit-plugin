@@ -1,0 +1,14 @@
+[
+  {
+    "name": "spotlight-new",
+    "type": "registry:ui",
+    "files": [
+      {
+        "path": "components/ui/spotlight-new.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/spotlight-new.tsx",
+        "content": "\"use client\"\n\nimport { motion } from \"motion/react\"\n\n// Stand-in: imports motion/react although the item declares no dependencies.\nexport const Spotlight = ({ duration = 6 }: { duration?: number } = {}) => {\n  return (\n    <motion.div className=\"pointer-events-none absolute inset-0\" animate={{ x: [0, 80, 0] }} transition={{ duration, repeat: Infinity }}>\n      <div className=\"absolute size-96 rounded-full\" style={{ background: \"radial-gradient(circle, hsla(210, 90%, 80%, .1), transparent 70%)\" }} />\n    </motion.div>\n  )\n}\n"
+      }
+    ]
+  }
+]

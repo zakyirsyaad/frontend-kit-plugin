@@ -1,0 +1,19 @@
+{
+  "name": "frontend-kit",
+  "description": "Marketplace for the frontend-kit Claude Code plugin",
+  "owner": {
+    "name": "zakyirsyaad"
+  },
+  "plugins": [
+    {
+      "name": "frontend-kit",
+      "description": "Systems/dashboard frontend kit for Next.js App Router + Tailwind CSS v4 + shadcn/ui: scaffold new projects, adopt existing ones, switch shadcn base-color palettes, auto-apply component rules, and review code against them.",
+      "version": "0.3.1",
+      "source": "./",
+      "author": {
+        "name": "Zaky Irsyad Rais"
+      },
+      "homepage": "https://github.com/zakyirsyaad/frontend-kit-plugin"
+    }
+  ]
+}

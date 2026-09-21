@@ -1,0 +1,52 @@
+name: Drift
+
+# The kit keeps two kinds of snapshots of things it does not own: palette values from
+# ui.shadcn.com (scripts/palettes/*.json) and what Magic UI / Aceternity items look like
+# (catalog/effects.json notes, tests/fixtures/registry/). This tells us when upstream moves,
+# instead of finding out through a broken project.
+on:
+  schedule:
+    - cron: '23 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+      - name: Compare palette snapshots with ui.shadcn.com
+        run: node scripts/refresh-palettes.mjs --check
+      - name: Check the effects catalog against the live registries
+        if: success() || failure()
+        run: node scripts/check-catalog.mjs
+      - name: Open an issue when something drifted
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71
+        with:
+          script: |
+            const title = 'Drift: upstream palettes or registry items changed';
+            const body = [
+              'The weekly drift check failed.',
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Palettes: run `node scripts/refresh-palettes.mjs` and review the diff.',
+              'Effects: `node scripts/check-catalog.mjs` lists items that are gone or whose issues changed;',
+              'update catalog/effects.json, the fixture in tests/fixtures/registry/ and the adapter tests.',
+            ].join('\n');
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'drift',
+            });
+            if (existing.data.some((i) => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title, body, labels: ['drift'],
+            });

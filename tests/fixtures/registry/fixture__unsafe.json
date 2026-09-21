@@ -1,0 +1,17 @@
+[
+  {
+    "name": "unsafe",
+    "type": "registry:ui",
+    "dependencies": [
+      "@tabler/icons-react"
+    ],
+    "files": [
+      {
+        "path": "components/ui/unsafe.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/unsafe.tsx",
+        "content": "\"use client\"\n\nimport { IconBolt } from \"@tabler/icons-react\"\n\nexport function Unsafe({ html }: { html: string }) {\n  const run = new Function(\"return 1\")\n  return (\n    <div>\n      <IconBolt />\n      <script src=\"https://cdn.example.com/tracker.js\" />\n      <div dangerouslySetInnerHTML={{ __html: html }} onClick={() => run()} />\n    </div>\n  )\n}\n"
+      }
+    ]
+  }
+]

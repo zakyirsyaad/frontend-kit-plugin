@@ -1,0 +1,17 @@
+[
+  {
+    "name": "background-beams",
+    "type": "registry:ui",
+    "dependencies": [
+      "motion"
+    ],
+    "files": [
+      {
+        "path": "components/ui/background-beams.tsx",
+        "type": "registry:ui",
+        "target": "components/ui/background-beams.tsx",
+        "content": "\"use client\"\n\nimport { motion } from \"motion/react\"\nimport React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n// Stand-in: animated SVG line with a hex-colored gradient, no reduced-motion handling.\nexport const BackgroundBeams = React.memo(({ className }: { className?: string }) => {\n  return (\n    <div className={cn(\"absolute inset-0\", className)}>\n      <svg className=\"pointer-events-none absolute size-full\" fill=\"none\" viewBox=\"0 0 100 100\">\n        <motion.path d=\"M0 50 L100 50\" stroke=\"url(#a)\" animate={{ pathLength: [0, 1] }} transition={{ duration: 8, repeat: Infinity }} />\n        <defs>\n          <linearGradient id=\"a\">\n            <stop stopColor=\"#0ea5e9\" />\n            <stop offset=\"0.3\" stopColor=\"#6366f1\" />\n            <stop offset=\"0.6\" stopColor=\"#a855f7\" />\n            <stop offset=\"1\" stopColor=\"#ec4899\" />\n          </linearGradient>\n          <radialGradient id=\"b\">\n            <stop stopColor=\"#e5e5e5\" />\n            <stop offset=\"1\" stopColor=\"#e5e5e5\" stopOpacity=\"0\" />\n          </radialGradient>\n        </defs>\n      </svg>\n    </div>\n  )\n})\n\nBackgroundBeams.displayName = \"BackgroundBeams\"\n"
+      }
+    ]
+  }
+]

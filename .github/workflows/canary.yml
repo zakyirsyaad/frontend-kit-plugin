@@ -1,0 +1,119 @@
+name: Canary
+
+# The kit drives two CLIs it does not control. A weekly scaffold against their
+# latest minors is what turns "shadcn changed something" from a user bug report
+# into an issue on this repo.
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  scaffold:
+    name: create-next-app@16 + shadcn@4 (latest minors)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020
+        with:
+          node-version: '24'
+
+      - name: Scaffold a project the way the create skill does
+        id: scaffold
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/canary-app"
+          npx --yes create-next-app@16 "$APP" --typescript --tailwind --eslint --app --src-dir \
+            --import-alias "@/*" --use-npm --yes </dev/null
+          npx --yes shadcn@4 init -b radix -p nova -y --no-reinstall --no-monorepo -c "$APP" </dev/null
+          npx --yes shadcn@4 add button badge card tabs dialog field -y -c "$APP" </dev/null
+          echo "app=$APP" >> "$GITHUB_OUTPUT"
+
+      - name: Record the versions that were actually installed
+        run: |
+          APP="${{ steps.scaffold.outputs.app }}"
+          node -e '
+            const fs = require("node:fs");
+            const pkg = JSON.parse(fs.readFileSync(process.argv[1] + "/package.json", "utf8"));
+            const deps = { ...pkg.dependencies, ...pkg.devDependencies };
+            console.log(JSON.stringify({ next: deps.next, react: deps.react, tailwindcss: deps.tailwindcss }, null, 2));
+          ' "$APP"
+          test -f "$APP/components.json"
+          grep -q '"style": "radix-nova"' "$APP/components.json"
+
+      - name: Run the kit scripts without an agent
+        run: |
+          set -euo pipefail
+          APP="${{ steps.scaffold.outputs.app }}"
+          node scripts/detect-project.mjs "$APP" --for create --json > /tmp/detect.json
+          node -e 'const d=require("/tmp/detect.json"); if(d.stops.length) { console.error(d.stops); process.exit(1); }'
+          node scripts/apply-theme-tokens.mjs "$APP" --palette zinc --force --font-sans geist
+          node scripts/write-rules.mjs "$APP"
+          node scripts/copy-templates.mjs boundaries "$APP"
+          node scripts/review-scan.mjs "$APP" --all
+
+      - name: Lint and build the scaffolded app
+        run: |
+          set -euo pipefail
+          APP="${{ steps.scaffold.outputs.app }}"
+          cd "$APP"
+          npm install --no-audit --no-fund
+          npm install geist --no-audit --no-fund
+          npm run lint
+          npm run build
+
+      # Blocks go stale against shadcn faster than anything else in the kit, and some of
+      # their failures (a missing provider) only show at runtime, so load every route.
+      - name: Install all blocks, review, lint, build and load their routes
+        run: |
+          set -euo pipefail
+          APP="${{ steps.scaffold.outputs.app }}"
+          node tests/canary/install-blocks.mjs "$APP"
+          FILES=$(cd "$APP" && find src/components/blocks src/app -name '*.tsx')
+          (cd "$APP" && node "$GITHUB_WORKSPACE/scripts/review-scan.mjs" . $FILES --json) > /tmp/review.json
+          node -e 'const r=require("/tmp/review.json"); console.log(r.verdict, JSON.stringify(r.counts)); if (r.counts.error) { console.error(JSON.stringify(r.findings.filter(f=>f.severity==="error"),null,2)); process.exit(1) }'
+          cd "$APP"
+          npx eslint src/components/blocks src/app
+          npm run build
+          npx next start -p 3100 > /tmp/next.log 2>&1 &
+          for i in $(seq 1 30); do curl -fs -o /dev/null http://localhost:3100/ && break; sleep 1; done
+          while read -r route; do
+            [ -z "$route" ] && continue
+            code=$(curl -s -o /tmp/page.html -w '%{http_code}' "http://localhost:3100$route")
+            echo "$route -> $code"
+            if [ "$code" != "200" ] || grep -q 'Application error' /tmp/page.html; then
+              cat /tmp/next.log
+              exit 1
+            fi
+          done < .canary-routes
+          if grep -E '⨯|Error:' /tmp/next.log; then exit 1; fi
+
+      - name: Open an issue when the canary breaks
+        if: failure() && github.event_name == 'schedule'
+        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71
+        with:
+          script: |
+            const title = 'Canary failed: create-next-app@16 / shadcn@4 latest minors';
+            const body = [
+              'The weekly canary failed. Upstream may have changed behaviour the kit depends on.',
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'Check first: shadcn init flags and preset names, the shape of globals.css,',
+              'whether layout.tsx is still left untouched, and the pinned majors in compat.json.',
+              'If only the blocks step failed: a shadcn component the blocks use changed its API',
+              '(templates/blocks/*), or a provider moved (the dashboard route failing at runtime).',
+            ].join('\n');
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'canary',
+            });
+            if (existing.data.some((i) => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title, body, labels: ['canary'],
+            });

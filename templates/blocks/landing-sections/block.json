@@ -1,0 +1,7 @@
+{
+  "name": "landing-sections",
+  "description": "Marketing sections built on kit tokens: hero, bento feature grid, FAQ and closing CTA, plus a page that composes them.",
+  "shadcn": ["button", "accordion"],
+  "dependencies": [],
+  "files": ["hero.tsx", "bento.tsx", "faq.tsx", "cta.tsx", "landing-page.tsx"]
+}
