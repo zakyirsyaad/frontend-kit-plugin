@@ -14,6 +14,10 @@ A [Claude Code](https://claude.com/claude-code) plugin for systems and dashboard
 | `blocks` | `/frontend-kit:blocks` | Copy a ready-made block into the project — dashboard shell, data table, chart card, state panel, form, landing sections — with the shadcn components and packages it needs, then lint, build and open its route |
 | `frontend-reviewer` | agent | Read-only review against the kit rules plus AI-slop signals; run on request, after UI changes, and in the verification phase of `create` and `adopt` |
 
+## Example
+
+[agency-web-beige.vercel.app](https://agency-web-beige.vercel.app/) is an agency landing page built with frontend-kit from a single one-shot prompt.
+
 
 ## Requirements
 
